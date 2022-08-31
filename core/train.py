@@ -65,7 +65,7 @@ def update_weights(model, batch, optimizer, replay_buffer, config, scaler, vis_r
     # obs_batch is the observation for hat s_t (predicted hidden states from dynamics function)
     # obs_target_batch is the observations for s_t (hidden states from representation function)
     # to save GPU memory usage, obs_batch_ori contains (stack + unroll steps) frames
-    obs_batch_ori = torch.from_numpy(obs_batch_ori).to(config.device).float() / 255.0
+    obs_batch_ori = torch.from_numpy(np.array(obs_batch_ori)).to(config.device).float() / 255.0
     obs_batch = obs_batch_ori[:, 0: config.stacked_observations * config.image_channel, :, :]
     obs_target_batch = obs_batch_ori[:, config.image_channel:, :, :]
 
@@ -75,12 +75,12 @@ def update_weights(model, batch, optimizer, replay_buffer, config, scaler, vis_r
         obs_target_batch = config.transform(obs_target_batch)
 
     # use GPU tensor
-    action_batch = torch.from_numpy(action_batch).to(config.device).unsqueeze(-1).long()
-    mask_batch = torch.from_numpy(mask_batch).to(config.device).float()
-    target_value_prefix = torch.from_numpy(target_value_prefix).to(config.device).float()
-    target_value = torch.from_numpy(target_value).to(config.device).float()
-    target_policy = torch.from_numpy(target_policy).to(config.device).float()
-    weights = torch.from_numpy(weights_lst).to(config.device).float()
+    action_batch = torch.from_numpy(np.array(action_batch)).to(config.device).unsqueeze(-1).long()
+    mask_batch = torch.from_numpy(np.array(mask_batch)).to(config.device).float()
+    target_value_prefix = torch.from_numpy(np.array(target_value_prefix)).to(config.device).float()
+    target_value = torch.from_numpy(np.array(target_value)).to(config.device).float()
+    target_policy = torch.from_numpy(np.array(target_policy)).to(config.device).float()
+    weights = torch.from_numpy(np.array(weights_lst)).to(config.device).float()
 
     batch_size = obs_batch.size(0)
     assert batch_size == config.batch_size == target_value_prefix.size(0)
