@@ -20,10 +20,12 @@ def _test(config, shared_storage):
     episodes = 0
     while True:
         counter = ray.get(shared_storage.get_counter.remote())
+        print(counter)
         if counter >= config.training_steps + config.last_steps:
             time.sleep(30)
             break
         if counter >= config.test_interval * episodes:
+            print('testing start')
             episodes += 1
             test_model.set_weights(ray.get(shared_storage.get_weights.remote()))
             test_model.eval()
