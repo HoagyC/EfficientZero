@@ -383,7 +383,7 @@ def _train(model, target_model, replay_buffer, shared_storage, batch_storage, co
         tot += 1
         if batch:
             succ += 1
-        if step_count < 10 or step_count % 10 == 0:
+        if step_count % 500  == 0:
             print(f"{succ / tot:5.2f}")
         
         if batch is None:
