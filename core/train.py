@@ -17,6 +17,7 @@ from core.storage import SharedStorage, QueueStorage
 from core.selfplay_worker import DataWorker
 from core.reanalyze_worker import BatchWorker_GPU, BatchWorker_CPU
 
+succ, tot = 0,0
 
 def consist_loss_func(f1, f2):
     """Consistency loss function: similarity loss
@@ -378,6 +379,13 @@ def _train(model, target_model, replay_buffer, shared_storage, batch_storage, co
 
         # obtain a batch
         batch = batch_storage.pop()
+        global succ, tot
+        tot += 1
+        if batch:
+            succ += 1
+        if step_count < 10 or step_count % 10 == 0:
+            print(f"{succ / tot:5.2f}")
+        
         if batch is None:
             time.sleep(0.3)
             continue
