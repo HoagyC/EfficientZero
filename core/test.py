@@ -95,6 +95,8 @@ def test(config, model, counter, test_episodes, device, render, save_video=False
         ep_clip_rewards = np.zeros(test_episodes)
         # loop
         while not dones.all():
+            if step % 10 == 0:
+                print(f"starting test games step {1}. completed {np.sum(dones}} of {test_episodes}")
             if render:
                 for i in range(test_episodes):
                     envs[i].render()
